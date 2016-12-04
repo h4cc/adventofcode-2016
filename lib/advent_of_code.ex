@@ -12,4 +12,11 @@ defmodule AdventOfCode do
     IO.puts("Solution complex: #{inspect solution}")
   end
 
+  def day3() do
+    solution = AdventOfCode.Day3.solve(:horizontal)
+    IO.puts("Solution: #{inspect solution}")
+    solution = AdventOfCode.Day3.solve(:vertical)
+    IO.puts("Solution: #{inspect solution}")
+  end
+
 end
