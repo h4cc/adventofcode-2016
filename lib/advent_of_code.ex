@@ -22,6 +22,8 @@ defmodule AdventOfCode do
   def day4() do
     solution = AdventOfCode.Day4.solve()
     IO.puts("Solution: #{inspect solution}")
+    solution = AdventOfCode.Day4.decifer()
+    IO.puts("Solution: #{inspect solution}")
   end
 
 end

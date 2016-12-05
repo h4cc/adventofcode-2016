@@ -1102,9 +1102,18 @@ jyfvnlupj-ibuuf-svnpzapjz-851[gmsnf]
 """
 
   def solve() do
-    @input_example
+    @input
     |> parse
-    |> IO.inspect
+    |> filter_decoy
+    |> sum_sector_ids
+  end
+
+  def decifer() do
+    @input
+    |> parse
+    |> filter_decoy
+    |> decifer_room_names
+    |> Enum.find(fn({name, _section_id}) -> name == "northpole object storage" end)
   end
 
   defp parse(string) do
@@ -1112,9 +1121,67 @@ jyfvnlupj-ibuuf-svnpzapjz-851[gmsnf]
     |> String.split("\n", trim: true)
     |> Enum.map(fn(room) ->
       parts = String.split(room, "-", trim: true)
-
-     {sector_id, checksum}
+      [sector_id, checksum] = parts |> List.last |> String.split("[")
+      [checksum, ""] = String.split(checksum, "]")
+      name_parts = parts |> Enum.take(length(parts) - 1)
+      sector_id = String.to_integer(sector_id)
+      {name_parts, sector_id, checksum}
     end)
+  end
+
+  defp filter_decoy(rooms) do
+    rooms
+    |> Enum.filter(fn({name_parts, _sector_id, checksum}) ->
+      checksum(name_parts) == checksum
+    end)
+  end
+
+  defp sum_sector_ids(rooms) do
+    rooms
+    |> Enum.map(fn({_name_parts, sector_id, _checksum}) ->
+       sector_id
+    end)
+    |> Enum.sum
+  end
+
+  defp decifer_room_names(rooms) do
+    rooms
+    |> Enum.map(fn({name_parts, sector_id, _checksum}) ->
+      name = name_parts
+      |> Enum.map(fn(name) ->
+        decrypt(name, sector_id, "")
+      end)
+      |> Enum.join(" ")
+      {name, sector_id}
+    end)
+    |> Enum.into(%{})
+  end
+
+  defp checksum(name_parts) do
+    name_parts
+    |> count_chars
+    |> Enum.sort_by(fn {_letter, freq} -> -freq end)
+    |> Keyword.keys
+    |> Enum.take(5)
+    |> Enum.join
+  end
+
+  defp count_chars(name_parts) do
+    name_parts
+    |> Enum.join
+    |> String.graphemes
+    |> Enum.reduce(%{}, fn letter, acc ->
+      Map.update(acc, letter, 1, & &1 + 1)
+    end)
+  end
+
+  defp decrypt("", _n, plain_text), do: plain_text
+  defp decrypt(<<first>> <> rest, n, plain_text) do
+    decrypt(rest, n, plain_text <> shift(first, n))
+  end
+
+  defp shift(letter, n) when letter in ?a..?z do
+    <<rem(letter - ?a + rem(n, 26), 26) + ?a>>
   end
 
 end
