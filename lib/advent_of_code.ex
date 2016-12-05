@@ -19,10 +19,15 @@ defmodule AdventOfCode do
     IO.puts("Solution: #{inspect solution}")
   end
 
-  def day4() do
-    solution = AdventOfCode.Day4.solve()
-    IO.puts("Solution: #{inspect solution}")
-    solution = AdventOfCode.Day4.decifer()
+#  def day4() do
+#    solution = AdventOfCode.Day4.solve()
+#    IO.puts("Solution: #{inspect solution}")
+#    solution = AdventOfCode.Day4.decifer()
+#    IO.puts("Solution: #{inspect solution}")
+#  end
+
+  def day5() do
+    solution = AdventOfCode.Day5.solve()
     IO.puts("Solution: #{inspect solution}")
   end
 
