@@ -33,4 +33,11 @@ defmodule AdventOfCode do
     IO.puts("Solution: #{inspect solution}")
   end
 
+  def day6() do
+    solution = AdventOfCode.Day6.solve(:high)
+    IO.puts("Solution: #{inspect solution}")
+    solution = AdventOfCode.Day6.solve(:low)
+    IO.puts("Solution: #{inspect solution}")
+  end
+
 end
