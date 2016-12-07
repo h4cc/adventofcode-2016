@@ -40,4 +40,11 @@ defmodule AdventOfCode do
     IO.puts("Solution: #{inspect solution}")
   end
 
+  def day7() do
+    solution = AdventOfCode.Day7.solve()
+    IO.puts("Solution: #{inspect solution}")
+    solution = AdventOfCode.Day7.solve2()
+    IO.puts("Solution: #{inspect solution}")
+  end
+
 end
